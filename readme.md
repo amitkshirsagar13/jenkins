@@ -6,16 +6,16 @@ Admin#123
 ### Build Images:
 
 ```
-docker build -t amitkshirsagar13/k8s-jenkins-server:latest .
+docker build -t amitkshirsagar13/k8s-jenkins-server:latest . && docker push amitkshirsagar13/k8s-jenkins-server:latest
+
+docker build -t amitkshirsagar13/k8s-jenkins-slave:latest . && docker push amitkshirsagar13/k8s-jenkins-slave:latest
 
 ```
 
 
 ### Run Jenkins Server in Docker Container:
 ```
-docker run -d -p 8080:8080 -p 50000:50000 --name jenkins-server -v C:/docker-share/jenkins/server/jenkins_home/:/var/jenkins_home amitkshirsagar13/k8s-jenkins-server:latest
-
-docker run -d -p 8080:8080 -p 50000:50000 --name jenkins-server -v "/Users/admin/tmp/jenkins/jenkins_home/:/var/jenkins_home" -v "/var/run/docker.sock:/var/run/docker.sock" amitkshirsagar13/k8s-jenkins-server:latest
+docker run -d -p 8080:8080 -p 50000:50000 --name jenkins-server -v /Users/admin/tmp/jenkins/jenkins_home/:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock amitkshirsagar13/k8s-jenkins-server:latest
 
 
 chown jenkins:jenkins /var/run/docker.sock
@@ -31,4 +31,13 @@ volume
 /Users/admin/tmp/jenkins/maven/:/home/jenkins/.m2
 
 
-```"# jenkins" 
+```
+
+
+### Alternatively, we can share the docker host port:
+
+```
+socat -d TCP-LISTEN:2376,range=127.0.0.1/32,reuseaddr,fork UNIX:/var/run/docker.sock
+
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 2376:2375 bobrik/socat TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock
+```
