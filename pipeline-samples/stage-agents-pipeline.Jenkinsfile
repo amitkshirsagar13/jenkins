@@ -5,7 +5,7 @@ pipeline {
       agent {
         docker {
           label 'slave'
-          image 'amitkshirsagar13/k8s-jenkins-slave:alp-lts'
+          image 'jenkins/jnlp-slave:alpine'
         }
       }
       steps {
