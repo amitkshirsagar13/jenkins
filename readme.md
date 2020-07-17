@@ -16,7 +16,7 @@ docker build -t amitkshirsagar13/k8s-jenkins-slave:alp-lts . -f Dockerfile.alpin
 
 ### Run Jenkins Server in Docker Container:
 ```
-docker run -d -p 8080:8080 -p 50000:50000 --name jenkins-server -v /opt/jenkins/jenkins_home/:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock amitkshirsagar13/k8s-jenkins-server:alp-lts
+docker run -d --restart unless-stopped -p 8080:8080 -p 50000:50000 --name jenkins-server -v /opt/jenkins/jenkins_home/:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock amitkshirsagar13/k8s-jenkins-server:alp-lts
 
 chown jenkins:jenkins /var/run/docker.sock
 ```
