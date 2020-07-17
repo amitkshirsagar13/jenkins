@@ -5,7 +5,7 @@ pipeline {
       agent {
         docker {
           label 'slave'
-          image 'amitkshirsagar13/k8s-jenkins-slave:latest'
+          image 'amitkshirsagar13/k8s-jenkins-slave:alp-lts'
         }
       }
       steps {
@@ -17,7 +17,7 @@ pipeline {
       agent {
         docker {
           label 'slave'
-          image 'amitkshirsagar13/k8s-jenkins-slave:latest'
+          image 'amitkshirsagar13/k8s-jenkins-slave:alp-lts'
         }
       }
       steps {
@@ -35,7 +35,7 @@ pipeline {
       agent {
         docker {
           label 'slave'
-          image 'amitkshirsagar13/k8s-jenkins-slave:latest'
+          image 'amitkshirsagar13/k8s-jenkins-slave:alp-lts'
         }
       }
       steps {
