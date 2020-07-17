@@ -15,7 +15,7 @@ docker build -t amitkshirsagar13/k8s-jenkins-slave:latest . && docker push amitk
 
 ### Run Jenkins Server in Docker Container:
 ```
-docker run -d -p 8080:8080 -p 50000:50000 --name jenkins-server -v /Users/admin/tmp/jenkins/jenkins_home/:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock amitkshirsagar13/k8s-jenkins-server:latest
+docker run -d -p 8080:8080 -p 50000:50000 --name jenkins-server -v /opt/jenkins/jenkins_home/:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock amitkshirsagar13/k8s-jenkins-server:latest
 
 
 chown jenkins:jenkins /var/run/docker.sock
