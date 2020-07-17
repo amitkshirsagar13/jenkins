@@ -1,6 +1,7 @@
 FROM jenkins/jenkins:lts-alpine
 LABEL maintainer="Amit Kshirsagar <amit.kshirsagar.13@gmail.com>"
 USER root
+COPY jenkins.sh /usr/local/bin/jenkins.sh
 
 ARG DSOCK=/var/run/docker.sock
 
