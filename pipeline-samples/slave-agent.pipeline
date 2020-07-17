@@ -1,0 +1,31 @@
+pipeline {
+  agent {
+    label 'slave'
+  }
+  stages {
+    stage('Checkout') {
+      steps {
+        // Get some code from a GitHub repository
+        git 'https://github.com/amitkshirsagar13/sample-service.git'
+      }
+    }
+    stage('Build') {
+      steps {
+        // Run Maven on a Unix agent.
+        sh "mvn -Dmaven.test.failure.ignore=true clean package"
+      }
+      post {
+          success {
+              junit '**/target/surefire-reports/TEST-*.xml'
+              archiveArtifacts 'target/*.jar'
+          }
+      }
+    }
+    stage('DockerPackage') {
+      steps {
+        // Run Docker Build on a Unix agent.
+        sh "docker build -t amitkshirsagar13/sample-service-from-pipeline ."
+      }
+    }
+  }
+}
