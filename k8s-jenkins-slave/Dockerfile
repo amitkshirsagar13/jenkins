@@ -43,4 +43,4 @@ ARG MAVEN_HOME_DIR="/home/jenkins"
 ENV MAVEN_CONFIG "$MAVEN_HOME_DIR/.m2"
 VOLUME [/home/jenkins/.m2]
 
-USER jenkins
+# USER jenkins

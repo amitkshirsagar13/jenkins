@@ -47,4 +47,4 @@ VOLUME [/home/jenkins/.m2]
 RUN rm /usr/share/jenkins/jenkins.war
 RUN curl -fsSL -o /usr/share/jenkins/jenkins.war http://mirrors.jenkins.io/war-stable/latest/jenkins.war
 
-USER jenkins
+# USER jenkins
