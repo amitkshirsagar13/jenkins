@@ -25,6 +25,8 @@ chown jenkins:jenkins /var/run/docker.sock
 ```
 Image: amitkshirsagar13/k8s-jenkins-slave:alp-lts
 
+Remote Working Directory: /home/jenkins/agent
+
 Jenkins Url:
 Your Jenkins Container Url
 
