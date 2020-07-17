@@ -1,0 +1,51 @@
+FROM jenkins/jenkins:lts-alpine
+LABEL maintainer="Amit Kshirsagar <amit.kshirsagar.13@gmail.com>"
+USER root
+
+ARG DSOCK=/var/run/docker.sock
+
+ARG user=jenkins
+ARG group=jenkins
+ARG uid=1000
+ARG gid=1000
+ARG groupd=docker
+ARG gidd=1001
+
+RUN addgroup -g ${gidd} ${groupd} 
+RUN addgroup ${user} ${groupd}
+RUN groups ${user}
+
+RUN touch $DSOCK \
+  && chown ${uid}:${gidd} $DSOCK
+
+# VOLUME $DSOCK
+RUN apk add --no-cache \
+  tar curl
+
+RUN curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-17.04.0-ce.tgz \
+  && echo "Extract Docker" \
+  && tar xzvf docker-17.04.0-ce.tgz \	  
+  && mv docker/docker /usr/local/bin \
+  && rm -r docker docker-17.04.0-ce.tgz
+
+ARG MAVEN_VERSION=3.6.3
+
+ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
+
+RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
+  && echo "Downlaoding maven" \
+  && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+  \
+  && echo "Unziping maven" \
+  && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
+  \
+  && echo "Cleaning and setting links" \
+  && rm -f /tmp/apache-maven.tar.gz \
+  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_HOME /usr/share/maven
+
+RUN rm /usr/share/jenkins/jenkins.war
+RUN curl -fsSL -o /usr/share/jenkins/jenkins.war http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+
+USER jenkins
