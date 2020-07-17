@@ -13,37 +13,7 @@ pipeline {
         git 'https://github.com/amitkshirsagar13/sample-service.git'
       }
     }
-    stage('Build') {
-      agent {
-        docker {
-          label 'slave'
-          image 'amitkshirsagar13/k8s-jenkins-slave:latest'
-        }
-      }
-      steps {
-        // Run Maven on a Unix agent.
-        sh "mvn -Dmaven.test.failure.ignore=true clean compile"
-      }
-    }
-    stage('Test') {
-      agent {
-        docker {
-          label 'slave'
-          image 'amitkshirsagar13/k8s-jenkins-slave:latest'
-        }
-      }
-      steps {
-        // Run Maven on a Unix agent.
-        sh "mvn -Dmaven.test.failure.ignore=true test"
-      }
-      post {
-          success {
-              junit '**/target/surefire-reports/TEST-*.xml'
-              archiveArtifacts 'target/*.jar'
-          }
-      }
-    }
-    stage('Package') {
+    stage('Build, Test and Package') {
       agent {
         docker {
           label 'slave'
@@ -53,6 +23,12 @@ pipeline {
       steps {
         // Run Maven on a Unix agent.
         sh "mvn -Dmaven.test.failure.ignore=true clean package"
+      }
+      post {
+          success {
+              junit '**/target/surefire-reports/TEST-*.xml'
+              archiveArtifacts 'target/*.jar'
+          }
       }
     }
     stage('DockerPackage') {
