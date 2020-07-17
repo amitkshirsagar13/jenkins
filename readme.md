@@ -26,9 +26,9 @@ chown jenkins:jenkins /var/run/docker.sock
 ### Run Slave with below configuration:
 ```
 volume
-/Users/admin/tmp/jenkins/jenkins_home/:/home/jenkins/agent 
+/opt/jenkins/jenkins_home/:/home/jenkins/agent 
 /var/run/docker.sock:/var/run/docker.sock 
-/Users/admin/tmp/jenkins/maven/:/home/jenkins/.m2
+/opt/jenkins/maven/:/home/jenkins/.m2
 
 
 ```
