@@ -1,0 +1,43 @@
+version: 3.8
+services:
+  localstack:
+    image: localstack/localstack:latest
+    restart: always
+    container_name: "localstack"
+    ports:
+      - "4567-4597:4567-4597"
+      - "8000:8000"
+      - "5555:5555"
+      - "${PORT_WEB_UI-8003}:${PORT_WEB_UI-8080}"
+    environment:
+      - SERVICES=${LOCALSTACK_SERVICES-s3:4572,dynamodb:8000,sqs:5555}
+      - DATA_DIR=/tmp/localstack/data
+      - DEBUG=${LOCALSTACK_DEBUG- }
+      - PORT_WEB_UI=${LOCALSTACK_PORT_WEB_UI- }
+    volumes:
+      - "${LOCALSTACK_TMPDIR:-/tmp/localstack}:/tmp/localstack"
+    deploy:
+      resources:
+        limits:
+          cpus: '3'
+          memory: 4096M
+        reservations:
+          cpus: '1.5'
+          memory: 1024M
+    
+  localstack-ui:
+    image: amitkshirsagar13/localstack-ui
+    container_name: "localstack-ui"
+    ports:
+      - "8001:8001"
+      - "8002:8002" # sqs-admin
+    environment:
+      - DYNAMO_ENDPOINT=http://localstack:4569
+      - SQS_ENDPOINT=http://localstack:5555
+      - AWS_REGION="us-east-1"
+    entrypoint: /bin/sh
+    command: -c "env DYNAMO_ENDPOINT=http://localstack:8000 dynamodb-admin & env SQS_ENDPOINT="http://localstack:5555" sqs-admin"
+    links:
+      - "localstack:localstack"
+    depends_on:
+      - localstack
