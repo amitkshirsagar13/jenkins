@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.8'
 services:
   sample-service:
     image: amitkshirsagar13/sample-service:24
@@ -9,6 +9,14 @@ services:
       - PORT=8090
     volumes: 
       - "D:/local/sample-service/:/tmp/sample-service"
+    dns:
+      - 192.168.1.111
+      - 8.8.8.8
+    extra_hosts:
+      - "sample-service:127.0.0.1"
+    hostname: sample-service-host
+    networks:
+      sample-service-network: {}
     deploy:
       replicas: 1
       resources:
@@ -18,3 +26,8 @@ services:
         reservations:
           cpus: '0.2'
           memory: 256M
+
+networks:
+  sample-service-network:
+    driver: overlay
+    attachable: true
