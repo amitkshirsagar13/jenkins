@@ -34,4 +34,3 @@ networks:
       driver: overlay
       config:
         - subnet: 172.16.238.0/24
-          gateway: 172.16.238.1
