@@ -16,7 +16,8 @@ services:
       - "sample-service:127.0.0.1"
     hostname: sample-service-host
     networks:
-      sample-service-network: {}
+      sample-service-network1: {}
+      sample-service-network2: {}
     deploy:
       replicas: 2
       resources:
@@ -28,11 +29,17 @@ services:
           memory: 256M
 
 networks:
-  sample-service-network:
+  sample-service-network1:
     driver: overlay
     attachable: true
     ipam:
       driver: default
       config:
         - subnet: 172.16.238.0/24
-          gateway: 172.16.238.1
+  sample-service-network2:
+    driver: overlay
+    attachable: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.50.238.0/24
