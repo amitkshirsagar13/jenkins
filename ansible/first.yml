@@ -1,0 +1,15 @@
+---
+- name: first ansible script
+  hosts: servers
+  remote_user: admin
+  tasks:
+    - name: Write some content in a file foo.txt
+      copy:
+        dest: ~/foo.txt
+        content: |
+          Good Morning! Again!!
+          Awesome sunshine today.
+      register: display_file_content
+    - name: display display_file_content
+      debug:
+        var: display_file_content
