@@ -1,11 +1,7 @@
 FROM jenkins/jenkins:lts
 LABEL maintainer="Amit Kshirsagar <amit.kshirsagar.13@gmail.com>"
 USER root
-
-# RUN groupadd docker
-# RUN usermod -a -G docker jenkins
-# RUN groups jenkins
-# RUN echo "if [ -e /var/run/docker.sock ]; then sudo chown jenkins:docker /var/run/docker.sock; fi" >> /var/jenkins_home/.profile
+COPY jenkins.sh /usr/local/bin/jenkins.sh
 
 #install docker
 RUN curl -sSL https://get.docker.com/ | sh
